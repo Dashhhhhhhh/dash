@@ -24,3 +24,205 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Print Styles */
+@media print {
+  /* Page setup */
+  @page {
+    margin: 0.75in;
+    size: letter;
+  }
+
+  /* Hide elements that shouldn't print */
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  /* Adjust text sizes for print */
+  .print\\:text-xs {
+    font-size: 0.75rem !important;
+    line-height: 1rem !important;
+  }
+
+  .print\\:text-sm {
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+  }
+
+  .print\\:text-base {
+    font-size: 1rem !important;
+    line-height: 1.5rem !important;
+  }
+
+  .print\\:text-lg {
+    font-size: 1.125rem !important;
+    line-height: 1.75rem !important;
+  }
+
+  .print\\:text-xl {
+    font-size: 1.25rem !important;
+    line-height: 1.75rem !important;
+  }
+
+  .print\\:text-2xl {
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
+  }
+
+  .print\\:text-3xl {
+    font-size: 1.875rem !important;
+    line-height: 2.25rem !important;
+  }
+
+  .print\\:text-4xl {
+    font-size: 2.25rem !important;
+    line-height: 2.5rem !important;
+  }
+
+  /* Spacing adjustments */
+  .print\\:mb-2 {
+    margin-bottom: 0.5rem !important;
+  }
+
+  .print\\:mb-3 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  .print\\:mb-4 {
+    margin-bottom: 1rem !important;
+  }
+
+  .print\\:mb-6 {
+    margin-bottom: 1.5rem !important;
+  }
+
+  .print\\:mb-8 {
+    margin-bottom: 2rem !important;
+  }
+
+  .print\\:mb-12 {
+    margin-bottom: 3rem !important;
+  }
+
+  /* Page break controls */
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+  }
+
+  .page-break-inside-avoid {
+    page-break-inside: avoid;
+  }
+
+  /* Avoid breaking sections */
+  section {
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+
+  /* Links styling for print */
+  a {
+    color: #000 !important;
+    text-decoration: underline !important;
+  }
+
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.75rem;
+    color: #666;
+  }
+
+  /* Ensure good contrast */
+  .dark\\:text-white {
+    color: #000 !important;
+  }
+
+  .dark\\:text-gray-300 {
+    color: #333 !important;
+  }
+
+  .dark\\:text-gray-400 {
+    color: #666 !important;
+  }
+
+  /* Background colors for print */
+  .bg-white,
+  .dark\\:bg-gray-900 {
+    background-color: #fff !important;
+  }
+
+  .bg-gray-50,
+  .dark\\:bg-gray-800 {
+    background-color: #fff !important;
+  }
+
+  /* Remove box shadows and hover effects */
+  * {
+    box-shadow: none !important;
+  }
+
+  /* Ensure all text is visible */
+  .text-gray-900 {
+    color: #000 !important;
+  }
+
+  .text-gray-700 {
+    color: #333 !important;
+  }
+
+  .text-gray-600 {
+    color: #666 !important;
+  }
+
+  /* Badge styling for print */
+  .bg-blue-100,
+  .dark\\:bg-blue-900 {
+    background-color: #eff6ff !important;
+    color: #1e40af !important;
+    border: 1px solid #bfdbfe !important;
+  }
+
+  .bg-green-100,
+  .dark\\:bg-green-900 {
+    background-color: #f0fdf4 !important;
+    color: #166534 !important;
+    border: 1px solid #bbf7d0 !important;
+  }
+
+  .bg-yellow-100,
+  .dark\\:bg-yellow-900 {
+    background-color: #fffbeb !important;
+    color: #92400e !important;
+    border: 1px solid #fde68a !important;
+  }
+
+  .bg-gray-100,
+  .dark\\:bg-gray-800 {
+    background-color: #f9fafb !important;
+    color: #374151 !important;
+    border: 1px solid #d1d5db !important;
+  }
+
+  /* Remove rounded corners for cleaner print */
+  .rounded,
+  .rounded-lg,
+  .rounded-full {
+    border-radius: 0 !important;
+  }
+
+  /* Adjust container for print */
+  .max-w-5xl {
+    max-width: 100% !important;
+  }
+
+  /* Ensure proper line spacing for readability */
+  .leading-relaxed {
+    line-height: 1.6 !important;
+  }
+}

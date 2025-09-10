@@ -1,0 +1,85 @@
+{
+  "basics": {
+    "name": "Dash Dunmire",
+    "headline": "Finance Student & Technology Enthusiast",
+    "location": "Columbus, OH",
+    "email": "dunmire.23@osu.edu",
+    "phone": "+1-440-231-3295",
+    "website": "",
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/Dashhhhhhhh"
+      }
+    ]
+  },
+  "education": [
+    {
+      "school": "The Ohio State University, Fisher College of Business",
+      "degree": "Bachelor of Science",
+      "field": "Finance",
+      "start": "2024",
+      "end": "Expected May 2028",
+      "details": [
+        "3.7 GPA",
+        "Founder/President of Ghosts and What Not (grew to around 40+ consistent members, taught skills such as communication and planning)",
+        "Member of SAGE learning community, a community which prioritizes diversity and the acceptance of other cultures",
+        "Member Filipino Student Association"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "company": "Marc's",
+      "role": "Stocker",
+      "location": "Columbus, OH",
+      "start": "Sep 2022",
+      "end": "Aug 2024",
+      "bullets": [
+        "Stocked Shelves, Pushed Carts",
+        "Provided customer service"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "ARCH Volatility Model for Bitcoin",
+      "url": "",
+      "bullets": [
+        "Built using a Streamlit dashboard and ARCH library",
+        "Developed volatility modeling system for cryptocurrency analysis"
+      ]
+    },
+    {
+      "name": "Quantum Computing Encrypt/Decryptor",
+      "url": "",
+      "bullets": [
+        "Built with IONQ, CIRQ, and Python",
+        "Collaborative project with one teammate",
+        "Implements quantum encryption/decryption algorithms"
+      ]
+    },
+    {
+      "name": "Cross-Sectional Momentum Rebalancer",
+      "url": "",
+      "bullets": [
+        "Backtested 2018–present with monthly rebalance",
+        "Vol-targeted sizing using pandas data analysis",
+        "Data sourced via Alpha Vantage API"
+      ]
+    }
+  ],
+  "skills": {
+    "languages": ["C++", "Python", "React"],
+    "frameworks": ["Streamlit", "CIRQ", "IONQ"],
+    "tools": ["Microsoft Office Suite (Word, Excel, PowerPoint, Outlook)", "Photoshop", "pandas", "Alpha Vantage API"],
+    "other": [
+      "System Administration (Linux)",
+      "Basic Networking (API flow, SIP/VOIP)",
+      "Soldering",
+      "Documentation Analysis",
+      "Memecoin Trading"
+    ]
+  },
+  "awards": []
+}
