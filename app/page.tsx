@@ -1,102 +1,213 @@
-import Image from "next/image";
+import Link from "next/link";
+import { getResumeBasics, getNonEmptyProjects, getResumeSkills } from "@/lib/resume";
+import { Badge } from "@/components/ui/Badge";
+import { DownloadButton } from "@/components/ui/DownloadButton";
+import { DarkModeToggle } from "@/components/ui/DarkModeToggle";
+import { GraduationCap, Briefcase, Code, MapPin, Github, Mail, Phone } from "lucide-react";
+import { designTokens } from "@/lib/design-tokens";
 
-export default function Home() {
+export default async function Home() {
+  const basics = await getResumeBasics();
+  const projects = await getNonEmptyProjects();
+  const skills = await getResumeSkills();
+
+  // Get top skills to showcase
+  const topSkills = [
+    ...skills.languages.slice(0, 3),
+    ...skills.frameworks.slice(0, 2),
+    ...skills.tools.slice(0, 2)
+  ];
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className={`${designTokens.colors.bg.primary} min-h-screen`}>
+      <DarkModeToggle />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Hero Section */}
+      <section className="relative py-20 md:py-32">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <div className="mb-8">
+            <h1 className={`${designTokens.typography.h1} ${designTokens.colors.text.primary} mb-4`}>
+              {basics.name}
+            </h1>
+            <p className={`${designTokens.typography.h2} ${designTokens.colors.text.secondary} mb-6`}>
+              {basics.headline}
+            </p>
+            <div className={`${designTokens.typography.body} ${designTokens.colors.text.secondary} max-w-2xl mx-auto mb-8`}>
+              Passionate finance student with a strong interest in technology, combining analytical skills with innovative problem-solving.
+              Currently pursuing a Bachelor of Science in Finance at The Ohio State University while exploring cutting-edge technologies.
+            </div>
+          </div>
+
+          {/* Contact Info */}
+          <div className="flex flex-wrap justify-center gap-4 mb-8 text-sm">
+            <div className="flex items-center gap-1.5">
+              <MapPin size={16} className={designTokens.colors.text.tertiary} />
+              <span className={designTokens.colors.text.secondary}>{basics.location}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <Mail size={16} className={designTokens.colors.text.tertiary} />
+              <span className={designTokens.colors.text.secondary}>{basics.email}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <Phone size={16} className={designTokens.colors.text.tertiary} />
+              <span className={designTokens.colors.text.secondary}>{basics.phone}</span>
+            </div>
+            {basics.links.map((link, index) => (
+              <a
+                key={index}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex items-center gap-1.5 ${designTokens.typography.link} hover:underline`}
+              >
+                <Github size={16} />
+                <span>{link.label}</span>
+              </a>
+            ))}
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link
+              href="/resume"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              View Full Resume
+            </Link>
+            <DownloadButton filename="Dash_Dunmire_Resume.pdf" className="inline-flex items-center gap-2 px-6 py-3 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-900 dark:text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" />
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </section>
+
+      {/* Quick Overview Section */}
+      <section className="py-16 bg-gray-50 dark:bg-gray-800/50">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className={`${designTokens.typography.h2} ${designTokens.colors.text.primary} text-center mb-12`}>
+            Quick Overview
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Education */}
+            <div className="text-center">
+              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <GraduationCap size={32} className="text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className={`${designTokens.typography.h4} ${designTokens.colors.text.primary} mb-2`}>
+                Education
+              </h3>
+              <p className={`${designTokens.typography.bodySmall} ${designTokens.colors.text.secondary}`}>
+                B.S. Finance - The Ohio State University<br />
+                Expected May 2028
+              </p>
+            </div>
+
+            {/* Experience */}
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Briefcase size={32} className="text-green-600 dark:text-green-400" />
+              </div>
+              <h3 className={`${designTokens.typography.h4} ${designTokens.colors.text.primary} mb-2`}>
+                Experience
+              </h3>
+              <p className={`${designTokens.typography.bodySmall} ${designTokens.colors.text.secondary}`}>
+                Retail Operations<br />
+                Marc's - Sep 2022 - Aug 2024
+              </p>
+            </div>
+
+            {/* Projects */}
+            <div className="text-center">
+              <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Code size={32} className="text-purple-600 dark:text-purple-400" />
+              </div>
+              <h3 className={`${designTokens.typography.h4} ${designTokens.colors.text.primary} mb-2`}>
+                Projects
+              </h3>
+              <p className={`${designTokens.typography.bodySmall} ${designTokens.colors.text.secondary}`}>
+                {projects.length} Technical Projects<br />
+                Including AI, Quantum Computing & Finance
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Skills Preview */}
+      <section className="py-16">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className={`${designTokens.typography.h2} ${designTokens.colors.text.primary} text-center mb-8`}>
+            Technical Skills
+          </h2>
+          <div className="flex flex-wrap justify-center gap-3">
+            {topSkills.map((skill, index) => (
+              <Badge key={index} variant="primary" size="md">
+                {skill}
+              </Badge>
+            ))}
+          </div>
+          <div className="text-center mt-6">
+            <Link
+              href="/resume"
+              className={`${designTokens.typography.link} ${designTokens.typography.body} font-medium`}
+            >
+              View complete skills & experience →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Projects */}
+      {projects.length > 0 && (
+        <section className="py-16 bg-gray-50 dark:bg-gray-800/50">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className={`${designTokens.typography.h2} ${designTokens.colors.text.primary} text-center mb-12`}>
+              Featured Projects
+            </h2>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {projects.slice(0, 3).map((project, index) => (
+                <div key={index} className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <h3 className={`${designTokens.typography.h4} ${designTokens.colors.text.primary} mb-3`}>
+                    {project.name}
+                  </h3>
+                  <p className={`${designTokens.typography.bodySmall} ${designTokens.colors.text.secondary} mb-4`}>
+                    {project.bullets[0]}
+                  </p>
+                  {project.url && (
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${designTokens.typography.link} ${designTokens.typography.bodySmall} font-medium`}
+                    >
+                      View Project →
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {projects.length > 3 && (
+              <div className="text-center mt-8">
+                <Link
+                  href="/resume"
+                  className={`${designTokens.typography.link} ${designTokens.typography.body} font-medium`}
+                >
+                  View all {projects.length} projects →
+                </Link>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* Footer */}
+      <footer className="py-8 border-t border-gray-200 dark:border-gray-700">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <p className={`${designTokens.typography.bodySmall} ${designTokens.colors.text.tertiary}`}>
+            Built with Next.js, TypeScript, and Tailwind CSS
+          </p>
+        </div>
       </footer>
     </div>
   );

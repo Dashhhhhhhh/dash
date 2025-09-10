@@ -1,5 +1,3 @@
-import { promises as fs } from 'fs';
-import path from 'path';
 import { Container } from '@/components/layout/Container';
 import { Section } from '@/components/ui/Section';
 import { SectionHeader } from '@/components/ui/SectionHeader';
@@ -12,60 +10,27 @@ import { ProjectItem } from '@/components/resume/ProjectItem';
 import { Download, GraduationCap, Briefcase, Code, Award } from 'lucide-react';
 import { designTokens } from '@/lib/design-tokens';
 import { DownloadButton } from '@/components/ui/DownloadButton';
-
-// Type definitions
-interface ResumeData {
-  basics: {
-    name: string;
-    headline: string;
-    location: string;
-    email: string;
-    phone: string;
-    website: string;
-    links: Array<{
-      label: string;
-      url: string;
-    }>;
-  };
-  education: Array<{
-    school: string;
-    degree: string;
-    field: string;
-    start: string;
-    end: string;
-    details: string[];
-  }>;
-  experience: Array<{
-    company: string;
-    role: string;
-    location: string;
-    start: string;
-    end: string;
-    bullets: string[];
-  }>;
-  projects: Array<{
-    name: string;
-    url: string;
-    bullets: string[];
-  }>;
-  skills: {
-    languages: string[];
-    frameworks: string[];
-    tools: string[];
-    other: string[];
-  };
-  awards: any[];
-}
-
-async function getResumeData(): Promise<ResumeData> {
-  const filePath = path.join(process.cwd(), 'data', 'resume.json');
-  const fileContents = await fs.readFile(filePath, 'utf8');
-  return JSON.parse(fileContents);
-}
+import {
+  loadResumeData,
+  getNonEmptyEducation,
+  getNonEmptyExperience,
+  getNonEmptyProjects,
+  getNonEmptyAwards,
+  hasEducation,
+  hasExperience,
+  hasProjects,
+  hasAwards,
+} from '@/lib/resume';
 
 
 export default async function ResumePage() {
-  const resumeData = await getResumeData();
+  const resumeData = await loadResumeData();
+
+  // Get filtered data to handle empty/null arrays gracefully
+  const education = await getNonEmptyEducation();
+  const experience = await getNonEmptyExperience();
+  const projects = await getNonEmptyProjects();
+  const awards = await getNonEmptyAwards();
 
   // Transform basic contact info into LinkIconRow format
   const contactLinks = [
@@ -113,36 +78,36 @@ export default async function ResumePage() {
         </header>
 
         {/* Education Section */}
-        {resumeData.education && resumeData.education.length > 0 && (
+        {education.length > 0 && (
           <Section>
             <SectionHeader icon={<GraduationCap size={20} />}>
               Education
             </SectionHeader>
-            {resumeData.education.map((edu, index) => (
+            {education.map((edu, index) => (
               <EducationItem key={index} {...edu} />
             ))}
           </Section>
         )}
 
         {/* Experience Section */}
-        {resumeData.experience && resumeData.experience.length > 0 && (
+        {experience.length > 0 && (
           <Section>
             <SectionHeader icon={<Briefcase size={20} />}>
               Experience
             </SectionHeader>
-            {resumeData.experience.map((exp, index) => (
+            {experience.map((exp, index) => (
               <ExperienceItem key={index} {...exp} />
             ))}
           </Section>
         )}
 
         {/* Projects Section */}
-        {resumeData.projects && resumeData.projects.length > 0 && (
+        {projects.length > 0 && (
           <Section>
             <SectionHeader icon={<Code size={20} />}>
               Projects
             </SectionHeader>
-            {resumeData.projects.map((project, index) => (
+            {projects.map((project, index) => (
               <ProjectItem key={index} {...project} />
             ))}
           </Section>
@@ -221,12 +186,29 @@ export default async function ResumePage() {
         )}
 
         {/* Awards Section (if any) */}
-        {resumeData.awards && resumeData.awards.length > 0 && (
+        {awards.length > 0 && (
           <Section>
             <SectionHeader icon={<Award size={20} />}>
               Awards & Certifications
             </SectionHeader>
-            {/* Awards content would go here */}
+            {awards.map((award, index) => (
+              <div key={index} className={`${designTokens.spacing.itemBottom} p-4 bg-gray-50 dark:bg-gray-800 rounded-lg`}>
+                <h4 className={`${designTokens.typography.h4} ${designTokens.colors.text.primary} mb-1`}>
+                  {award.title}
+                </h4>
+                <p className={`${designTokens.typography.bodySmall} ${designTokens.colors.text.secondary} mb-1`}>
+                  {award.issuer}
+                </p>
+                <p className={`${designTokens.typography.caption} ${designTokens.colors.text.tertiary} mb-2`}>
+                  {new Date(award.date).getFullYear()}
+                </p>
+                {award.notes && (
+                  <p className={`${designTokens.typography.bodySmall} ${designTokens.colors.text.secondary}`}>
+                    {award.notes}
+                  </p>
+                )}
+              </div>
+            ))}
           </Section>
         )}
       </Container>

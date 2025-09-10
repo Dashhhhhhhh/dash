@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "next start"
+    "build": "node scripts/validate-resume.js && next build --turbopack",
+    "start": "next start",
+    "validate": "node scripts/validate-resume.js"
   },
   "dependencies": {
     "lucide-react": "^0.543.0",
