@@ -79,25 +79,9 @@ export const designTokens = {
     },
   },
 
-  // Print styles (applied via Tailwind classes)
+  // Print styles (using data attributes for Tailwind v4 compatibility)
   print: {
-    hide: 'print:hidden',
-    break: 'print:page-break-inside-avoid',
-    text: 'print:text-xs md:print:text-sm',
-    mb2: 'print:mb-2',
-    mb3: 'print:mb-3',
-    mb4: 'print:mb-4',
-    mb6: 'print:mb-6',
-    mb8: 'print:mb-8',
-    mb12: 'print:mb-12',
-    textXs: 'print:text-xs',
-    textSm: 'print:text-sm',
-    textBase: 'print:text-base',
-    textLg: 'print:text-lg',
-    textXl: 'print:text-xl',
-    text2xl: 'print:text-2xl',
-    text3xl: 'print:text-3xl',
-    text4xl: 'print:text-4xl',
+    hide: 'data-print-hide',
   },
 } as const;
 

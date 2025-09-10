@@ -4,14 +4,11 @@ import { designTokens } from '@/lib/design-tokens';
 interface SectionProps {
   children: ReactNode;
   className?: string;
-  printBreak?: boolean;
 }
 
-export function Section({ children, className = '', printBreak = true }: SectionProps) {
-  const breakClass = printBreak ? designTokens.print.break : '';
-
+export function Section({ children, className = '' }: SectionProps) {
   return (
-    <section className={`${designTokens.spacing.sectionBottom} ${breakClass} ${className}`}>
+    <section className={`${designTokens.spacing.sectionBottom} ${className}`}>
       {children}
     </section>
   );

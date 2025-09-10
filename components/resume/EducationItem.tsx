@@ -22,7 +22,7 @@ export function EducationItem({
   };
 
   return (
-    <div className={`${designTokens.spacing.itemBottom} ${designTokens.print.break}`}>
+    <div className={designTokens.spacing.itemBottom}>
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
         <div>
           <h3 className={`${designTokens.typography.h4} ${designTokens.colors.text.primary}`}>

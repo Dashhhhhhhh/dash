@@ -11,6 +11,7 @@ import { EducationItem } from '@/components/resume/EducationItem';
 import { ProjectItem } from '@/components/resume/ProjectItem';
 import { Download, GraduationCap, Briefcase, Code, Award } from 'lucide-react';
 import { designTokens } from '@/lib/design-tokens';
+import { DownloadButton } from '@/components/ui/DownloadButton';
 
 // Type definitions
 interface ResumeData {
@@ -62,29 +63,6 @@ async function getResumeData(): Promise<ResumeData> {
   return JSON.parse(fileContents);
 }
 
-function DownloadButton() {
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = '/resume.pdf';
-    link.download = 'Dash_Dunmire_Resume.pdf';
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  return (
-    <button
-      onClick={handleDownload}
-      className={`${designTokens.print.hide} inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
-      aria-label="Download Resume PDF"
-    >
-      <Download size={16} />
-      Download PDF
-    </button>
-  );
-}
 
 export default async function ResumePage() {
   const resumeData = await getResumeData();
