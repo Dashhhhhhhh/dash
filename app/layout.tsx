@@ -13,15 +13,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dash Dunmire - Finance Student & Technology Enthusiast",
+  title: "Dash Dunmire - Finance Student",
   description: "Passionate finance student at The Ohio State University with expertise in technology, including Python, React, and quantum computing. Explore my projects and professional experience.",
-  keywords: ["Dash Dunmire", "finance student", "technology enthusiast", "Python developer", "React developer", "quantum computing", "The Ohio State University"],
+  keywords: ["Dash Dunmire", "finance student", "technology enthusiast", "Python developer", "React developer", "The Ohio State University"],
   authors: [{ name: "Dash Dunmire" }],
   creator: "Dash Dunmire",
   publisher: "Dash Dunmire",
   openGraph: {
-    title: "Dash Dunmire - Finance Student & Technology Enthusiast",
-    description: "Passionate finance student at The Ohio State University with expertise in technology, including Python, React, and quantum computing.",
+    title: "Dash Dunmire - Finance Student",
+    description: "Passionate finance student at The Ohio State University with knowledge in technology, including Python, React, and quantum computing.",
     type: "website",
     locale: "en_US",
     images: [
@@ -29,13 +29,13 @@ export const metadata: Metadata = {
         url: "/og-resume.svg",
         width: 1200,
         height: 630,
-        alt: "Dash Dunmire - Professional Portfolio",
+        alt: "Dash Dunmire",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dash Dunmire - Finance Student & Technology Enthusiast",
+    title: "Dash Dunmire - Finance Student",
     description: "Passionate finance student at The Ohio State University with expertise in technology, including Python, React, and quantum computing.",
     images: ["/og-resume.svg"],
   },
