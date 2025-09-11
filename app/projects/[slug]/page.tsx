@@ -1,0 +1,310 @@
+import { notFound } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+import type { Metadata } from 'next';
+import { projects } from '@/data/projects';
+import { Project } from '@/types/project';
+import { Container } from '@/components/layout/Container';
+import { SectionHeader } from '@/components/ui/SectionHeader';
+import { Prose } from '@/components/Prose';
+import { designTokens } from '@/lib/design-tokens';
+
+// Configure static generation
+export const dynamic = 'error';
+
+// Generate static params for all projects
+export async function generateStaticParams() {
+  return projects.map((project) => ({
+    slug: project.slug,
+  }));
+}
+
+// Generate metadata for each project
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const project = projects.find(p => p.slug === params.slug);
+
+  if (!project) {
+    return {
+      title: 'Project Not Found',
+    };
+  }
+
+  return {
+    title: `${project.title} – Dash Dunmire`,
+    description: project.summary,
+    keywords: project.tags,
+    openGraph: {
+      title: `${project.title} – Dash Dunmire`,
+      description: project.summary,
+      type: 'article',
+      url: `https://dashdunmire.dev/projects/${project.slug}`,
+      images: project.images.length > 0 ? [
+        {
+          url: `/api/og?title=${encodeURIComponent(project.title)}&tags=${encodeURIComponent(project.tags.slice(0, 3).join(','))}`,
+          width: 1200,
+          height: 630,
+          alt: project.title,
+        },
+      ] : undefined,
+      publishedTime: project.date,
+      authors: ['Dash Dunmire'],
+      tags: project.tags,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${project.title} – Dash Dunmire`,
+      description: project.summary,
+      images: project.images.length > 0 ? [
+        `/api/og?title=${encodeURIComponent(project.title)}&tags=${encodeURIComponent(project.tags.slice(0, 3).join(','))}`
+      ] : undefined,
+    },
+    alternates: {
+      canonical: `https://dashdunmire.dev/projects/${project.slug}`,
+    },
+  };
+}
+
+interface ProjectPageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default function ProjectPage({ params }: ProjectPageProps) {
+  const project = projects.find(p => p.slug === params.slug);
+
+  if (!project) {
+    notFound();
+  }
+
+  return (
+    <main className="min-h-screen py-8 md:py-16">
+      <Container size="lg">
+        {/* Skip to content link */}
+        <a
+          href="#project-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-50"
+        >
+          Skip to project content
+        </a>
+
+        {/* Back to Projects Link */}
+        <nav className="mb-8" aria-label="Breadcrumb">
+          <Link
+            href="/projects"
+            className={`${designTokens.typography.link} text-sm font-medium flex items-center gap-2 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 rounded px-2 py-1`}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Projects
+          </Link>
+        </nav>
+
+        {/* Project Header */}
+        <header className="mb-12" id="project-content">
+          <SectionHeader level={1}>
+            {project.title}
+          </SectionHeader>
+
+          <div className="flex flex-wrap gap-2 mb-6">
+            {project.tags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          <p className={`${designTokens.typography.body} ${designTokens.colors.text.secondary} text-lg leading-relaxed`}>
+            {project.summary}
+          </p>
+        </header>
+
+        {/* Hero Section with TL;DR and Metrics */}
+        <section className="mb-12" aria-labelledby="hero-heading">
+          <h2 id="hero-heading" className="sr-only">
+            Project Overview
+          </h2>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* TL;DR Bullet Points */}
+            <div className="lg:col-span-2">
+              <h3 className={`${designTokens.typography.h3} ${designTokens.colors.text.primary} mb-4`}>
+                TL;DR
+              </h3>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="text-blue-600 dark:text-blue-400 mt-1" aria-hidden="true">•</span>
+                  <span className={`${designTokens.typography.body} ${designTokens.colors.text.secondary}`}>
+                    <strong>Role:</strong> {project.role}
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-blue-600 dark:text-blue-400 mt-1" aria-hidden="true">•</span>
+                  <span className={`${designTokens.typography.body} ${designTokens.colors.text.secondary}`}>
+                    <strong>Stack:</strong> {project.stack.join(', ')}
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-blue-600 dark:text-blue-400 mt-1" aria-hidden="true">•</span>
+                  <span className={`${designTokens.typography.body} ${designTokens.colors.text.secondary}`}>
+                    <strong>Completed:</strong> {new Date(project.date).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Metrics Table */}
+            <div>
+              <h3 className={`${designTokens.typography.h3} ${designTokens.colors.text.primary} mb-4`}>
+                Key Metrics
+              </h3>
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                <dl className="space-y-3">
+                  {Object.entries(project.metrics).map(([key, value]) => (
+                    <div key={key} className="flex justify-between items-center">
+                      <dt className={`${designTokens.typography.bodySmall} ${designTokens.colors.text.secondary} font-medium`}>
+                        {key}
+                      </dt>
+                      <dd className={`${designTokens.typography.bodySmall} ${designTokens.colors.text.primary} font-semibold`}>
+                        {value}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Problem Section */}
+        <section className="mb-12" aria-labelledby="problem-heading">
+          <SectionHeader level={2}>
+            Problem
+          </SectionHeader>
+          <Prose>
+            <div className="space-y-4">
+              {project.problem.split('\n\n').map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
+            </div>
+          </Prose>
+        </section>
+
+        {/* Approach Section */}
+        <section className="mb-12" aria-labelledby="approach-heading">
+          <SectionHeader level={2}>
+            Approach
+          </SectionHeader>
+          <Prose>
+            <ul className="space-y-3">
+              {project.approach.map((item, index) => (
+                <li key={index} className="flex items-start gap-3">
+                  <span className="text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" aria-hidden="true">→</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </Prose>
+        </section>
+
+        {/* Results Section */}
+        <section className="mb-12" aria-labelledby="results-heading">
+          <SectionHeader level={2}>
+            Results
+          </SectionHeader>
+          <Prose>
+            <ul className="space-y-3">
+              {project.results.map((item, index) => (
+                <li key={index} className="flex items-start gap-3">
+                  <span className="text-green-600 dark:text-green-400 mt-1 flex-shrink-0" aria-hidden="true">✓</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </Prose>
+        </section>
+
+        {/* Gallery Section */}
+        {project.images.length > 0 && (
+          <section className="mb-12" aria-labelledby="gallery-heading">
+            <SectionHeader level={2}>
+              Gallery
+            </SectionHeader>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {project.images.map((image, index) => (
+                <div key={index} className="relative aspect-video overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    className="object-cover transition-transform duration-300 hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority={index === 0}
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Links Section */}
+        <section className="mb-12" aria-labelledby="links-heading">
+          <SectionHeader level={2}>
+            Links
+          </SectionHeader>
+          <div className="flex flex-wrap gap-4">
+            <Link
+              href={project.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${designTokens.typography.link} inline-flex items-center gap-2 font-medium px-4 py-2 bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900`}
+              aria-label={`View ${project.title} source code on GitHub`}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+              View Source
+            </Link>
+
+            {project.demoUrl && (
+              <Link
+                href={project.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${designTokens.typography.link} inline-flex items-center gap-2 font-medium px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900`}
+                aria-label={`View ${project.title} live demo`}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+                Live Demo
+              </Link>
+            )}
+          </div>
+        </section>
+
+        {/* Learnings Section */}
+        <section aria-labelledby="learnings-heading">
+          <SectionHeader level={2}>
+            Learnings & Reflections
+          </SectionHeader>
+          <Prose>
+            <p>
+              This project provided valuable insights into {project.tags.slice(0, 2).join(' and ')} development,
+              highlighting the importance of {project.approach.length > 0 ? project.approach[0].toLowerCase().split(' ').slice(0, 3).join(' ') : 'careful planning and execution'}.
+              The experience reinforced the value of iterative development and thorough testing when working with {project.stack[0]} and related technologies.
+            </p>
+          </Prose>
+        </section>
+      </Container>
+    </main>
+  );
+}
