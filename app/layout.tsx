@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Dash Dunmire - Finance Student",
   description: "Passionate finance student at The Ohio State University with expertise in technology, including Python, React, and quantum computing. Explore my projects and professional experience.",
-  keywords: ["Dash Dunmire", "finance student", "technology enthusiast", "Python developer", "React developer", "The Ohio State University"],
+  keywords: ["Dash Dunmire", "finance student", "Python developer", "React developer", "The Ohio State University"],
   authors: [{ name: "Dash Dunmire" }],
   creator: "Dash Dunmire",
   publisher: "Dash Dunmire",
@@ -70,6 +70,9 @@ export default function RootLayout({
             __html: JSON.stringify(websiteJsonLd()),
           }}
         />
+
+        {/* Favicon */}
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
         {/* Plausible Analytics */}
         {plausibleDomain && (
