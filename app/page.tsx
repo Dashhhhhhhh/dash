@@ -2,9 +2,9 @@ import Link from "next/link";
 import { getResumeBasics, getNonEmptyProjects, getResumeSkills } from "@/lib/resume";
 import { Badge } from "@/components/ui/Badge";
 import { DownloadButton } from "@/components/ui/DownloadButton";
-import { DarkModeToggle } from "@/components/ui/DarkModeToggle";
 import { GraduationCap, Briefcase, Code, MapPin, Github, Mail, Phone } from "lucide-react";
 import { designTokens } from "@/lib/design-tokens";
+import FeaturedProjects from "@/components/FeaturedProjects";
 
 export default async function Home() {
   const basics = await getResumeBasics();
@@ -20,8 +20,6 @@ export default async function Home() {
 
   return (
     <div className={`${designTokens.colors.bg.primary} min-h-screen`}>
-      <DarkModeToggle />
-
       {/* Hero Section */}
       <section className="relative py-20 md:py-32">
         <div className="max-w-4xl mx-auto px-4 text-center">
@@ -157,49 +155,7 @@ export default async function Home() {
       </section>
 
       {/* Featured Projects */}
-      {projects.length > 0 && (
-        <section className="py-16 bg-gray-50 dark:bg-gray-800/50">
-          <div className="max-w-6xl mx-auto px-4">
-            <h2 className={`${designTokens.typography.h2} ${designTokens.colors.text.primary} text-center mb-12`}>
-              Featured Projects
-            </h2>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projects.slice(0, 3).map((project, index) => (
-                <div key={index} className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-                  <h3 className={`${designTokens.typography.h4} ${designTokens.colors.text.primary} mb-3`}>
-                    {project.name}
-                  </h3>
-                  <p className={`${designTokens.typography.bodySmall} ${designTokens.colors.text.secondary} mb-4`}>
-                    {project.bullets[0]}
-                  </p>
-                  {project.url && (
-                    <a
-                      href={project.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`${designTokens.typography.link} ${designTokens.typography.bodySmall} font-medium`}
-                    >
-                      View Project →
-                    </a>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {projects.length > 3 && (
-              <div className="text-center mt-8">
-                <Link
-                  href="/resume"
-                  className={`${designTokens.typography.link} ${designTokens.typography.body} font-medium`}
-                >
-                  View all {projects.length} projects →
-                </Link>
-              </div>
-            )}
-          </div>
-        </section>
-      )}
+      <FeaturedProjects />
 
       {/* Footer */}
       <footer className="py-8 border-t border-gray-200 dark:border-gray-700">

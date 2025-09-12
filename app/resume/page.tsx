@@ -3,7 +3,6 @@ import { Section } from '@/components/ui/Section';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { LinkIconRow } from '@/components/ui/LinkIconRow';
 import { Badge } from '@/components/ui/Badge';
-import { DarkModeToggle } from '@/components/ui/DarkModeToggle';
 import { ExperienceItem } from '@/components/resume/ExperienceItem';
 import { EducationItem } from '@/components/resume/EducationItem';
 import { ProjectItem } from '@/components/resume/ProjectItem';
@@ -54,7 +53,6 @@ export default async function ResumePage() {
 
   return (
     <div className={`${designTokens.colors.bg.primary} min-h-screen py-8 md:py-12`}>
-      <DarkModeToggle />
       <Container size="lg">
         {/* Header Section */}
         <header className="text-center mb-12">

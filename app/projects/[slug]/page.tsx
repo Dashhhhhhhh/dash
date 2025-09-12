@@ -20,8 +20,9 @@ export async function generateStaticParams() {
 }
 
 // Generate metadata for each project
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const project = projects.find(p => p.slug === params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const project = projects.find(p => p.slug === resolvedParams.slug);
 
   if (!project) {
     return {
@@ -65,13 +66,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 interface ProjectPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-export default function ProjectPage({ params }: ProjectPageProps) {
-  const project = projects.find(p => p.slug === params.slug);
+export default async function ProjectPage({ params }: ProjectPageProps) {
+  const resolvedParams = await params;
+  const project = projects.find(p => p.slug === resolvedParams.slug);
 
   if (!project) {
     notFound();
@@ -88,17 +90,42 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           Skip to project content
         </a>
 
-        {/* Back to Projects Link */}
-        <nav className="mb-8" aria-label="Breadcrumb">
-          <Link
-            href="/projects"
-            className={`${designTokens.typography.link} text-sm font-medium flex items-center gap-2 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 rounded px-2 py-1`}
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Projects
-          </Link>
+        {/* Navigation */}
+        <nav className="mb-8" aria-label="Main navigation">
+          <div className="flex flex-wrap items-center gap-4">
+            {/* Home */}
+            <Link
+              href="/"
+              className={`${designTokens.typography.link} text-sm font-medium flex items-center gap-2 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 rounded px-3 py-2 transition-colors`}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              Home
+            </Link>
+
+            {/* Projects */}
+            <Link
+              href="/projects"
+              className={`${designTokens.typography.link} text-sm font-medium flex items-center gap-2 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 rounded px-3 py-2 transition-colors`}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+              Projects
+            </Link>
+
+            {/* Resume */}
+            <Link
+              href="/resume"
+              className={`${designTokens.typography.link} text-sm font-medium flex items-center gap-2 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 rounded px-3 py-2 transition-colors`}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Resume
+            </Link>
+          </div>
         </nav>
 
         {/* Project Header */}
@@ -146,16 +173,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                   <span className="text-blue-600 dark:text-blue-400 mt-1" aria-hidden="true">•</span>
                   <span className={`${designTokens.typography.body} ${designTokens.colors.text.secondary}`}>
                     <strong>Stack:</strong> {project.stack.join(', ')}
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1" aria-hidden="true">•</span>
-                  <span className={`${designTokens.typography.body} ${designTokens.colors.text.secondary}`}>
-                    <strong>Completed:</strong> {new Date(project.date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
                   </span>
                 </li>
               </ul>

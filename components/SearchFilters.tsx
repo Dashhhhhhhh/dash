@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Project } from '@/types/project';
 import { Badge } from '@/components/ui/Badge';
 import { designTokens } from '@/lib/design-tokens';
@@ -41,7 +41,7 @@ export function SearchFilters({ projects, onFilteredProjectsChange }: SearchFilt
   }, [projects, searchQuery, selectedTags]);
 
   // Update parent component when filtered projects change
-  useMemo(() => {
+  useEffect(() => {
     onFilteredProjectsChange(filteredProjects);
   }, [filteredProjects, onFilteredProjectsChange]);
 
