@@ -150,56 +150,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </p>
         </header>
 
-        {/* Hero Section with TL;DR and Metrics */}
-        <section className="mb-12" aria-labelledby="hero-heading">
-          <h2 id="hero-heading" className="sr-only">
-            Project Overview
-          </h2>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* TL;DR Bullet Points */}
-            <div className="lg:col-span-2">
-              <h3 className={`${designTokens.typography.h3} ${designTokens.colors.text.primary} mb-4`}>
-                TL;DR
-              </h3>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-3">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1" aria-hidden="true">•</span>
-                  <span className={`${designTokens.typography.body} ${designTokens.colors.text.secondary}`}>
-                    <strong>Role:</strong> {project.role}
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1" aria-hidden="true">•</span>
-                  <span className={`${designTokens.typography.body} ${designTokens.colors.text.secondary}`}>
-                    <strong>Stack:</strong> {project.stack.join(', ')}
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Metrics Table */}
-            <div>
-              <h3 className={`${designTokens.typography.h3} ${designTokens.colors.text.primary} mb-4`}>
-                Key Metrics
-              </h3>
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-                <dl className="space-y-3">
-                  {Object.entries(project.metrics).map(([key, value]) => (
-                    <div key={key} className="flex justify-between items-center">
-                      <dt className={`${designTokens.typography.bodySmall} ${designTokens.colors.text.secondary} font-medium`}>
-                        {key}
-                      </dt>
-                      <dd className={`${designTokens.typography.bodySmall} ${designTokens.colors.text.primary} font-semibold`}>
-                        {value}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Problem Section */}
         <section className="mb-12" aria-labelledby="problem-heading">
@@ -241,7 +191,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <ul className="space-y-3">
               {project.results.map((item, index) => (
                 <li key={index} className="flex items-start gap-3">
-                  <span className="text-green-600 dark:text-green-400 mt-1 flex-shrink-0" aria-hidden="true">✓</span>
+                  <span className="text-blue-600 dark:text-blue-400 mt-1" aria-hidden="true">•</span>
                   <span>{item}</span>
                 </li>
               ))}
@@ -249,28 +199,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </Prose>
         </section>
 
-        {/* Gallery Section */}
-        {project.images.length > 0 && (
-          <section className="mb-12" aria-labelledby="gallery-heading">
-            <SectionHeader level={2}>
-              Gallery
-            </SectionHeader>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {project.images.map((image, index) => (
-                <div key={index} className="relative aspect-video overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    className="object-cover transition-transform duration-300 hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    priority={index === 0}
-                  />
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
 
         {/* Links Section */}
         <section className="mb-12" aria-labelledby="links-heading">
@@ -291,20 +219,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               View Source
             </Link>
 
-            {project.demoUrl && (
-              <Link
-                href={project.demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${designTokens.typography.link} inline-flex items-center gap-2 font-medium px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900`}
-                aria-label={`View ${project.title} live demo`}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-                Live Demo
-              </Link>
-            )}
           </div>
         </section>
 

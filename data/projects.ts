@@ -106,7 +106,7 @@ export const projects: Project[] = [
       "Rebalance Frequency": "Monthly",
       "API Reliability": "99.5%"
     },
-    repoUrl: "https://github.com/Dashhhhhhhh/cross-sectional-momentum-rebalancer",
+    repoUrl: "https://github.com/Dashhhhhhhh/xsectional-momentum",
     demoUrl: "https://cross-sectional-momentum-rebalancer.vercel.app",
     images: [
       {
@@ -235,7 +235,7 @@ export const projects: Project[] = [
       "Error Rate": "0.5%",
       "Simulation Speed": "1000 qubits/sec"
     },
-    repoUrl: "https://github.com/Dashhhhhhhh/quantum-bb84",
+    repoUrl: "https://github.com/Dashhhhhhhh/qencryption",
     demoUrl: "https://quantum-bb84-demo.vercel.app",
     images: [
       {
